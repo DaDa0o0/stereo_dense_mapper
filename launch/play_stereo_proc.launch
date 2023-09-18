@@ -1,0 +1,25 @@
+<launch>        
+    <arg name="bag" default="/home/da/download/dataset_underwater/sim_rexrov/medium.bag" />        
+    <node pkg="rosbag" type="play" name="rosbag_record"
+       args="$(arg bag) --clock --topics /rexrov2/rexrov2/cameraright/camera_image/compressed /rexrov2/rexrov2/cameraleft/camera_image/compressed  /rexrov2/rexrov2/cameraleft/camera_image /rexrov2/rexrov2/cameraright/camera_image /rexrov2/imu /rexrov2/dvl_twist /CAM_L/image_dehazed/compressed /CAM_R/image_dehazed/compressed /gx5/imu/data /falcon/odometry /CAM_R/camera_info /CAM_L/camera_info" output="screen"/>
+
+    <node name="republish_l" type="republish" pkg="image_transport" output="screen" args="compressed in:=/CAM_L/image_dehazed raw compressed out:=/stereo/left/image_raw" />
+    <node name="republish_r" type="republish" pkg="image_transport" output="screen" args="compressed in:=/CAM_R/image_dehazed raw compressed out:=/stereo/right/image_raw" />
+
+    <node name="image_proc" pkg="stereo_image_proc" type="stereo_image_proc" ns="stereo">
+        <param name="approximate_sync" value="true" />
+        <param name="queue_size" value="10" />        
+        <remap from="/stereo/left/camera_info" to="/CAM_L/camera_info"/>
+        <remap from="/stereo/right/camera_info" to="/CAM_R/camera_info"/>
+    </node>
+
+    <node name="view" pkg="image_view" type="stereo_view"> 
+        <remap from="stereo" to="/stereo"/>        
+        <remap from="image" to="image_rect_color"/>    
+        <param name="approximate_sync" value="true" />
+        <param name="queue_size" value="10" />            
+    </node>/>
+    <node name="config" pkg="rqt_reconfigure" type="rqt_reconfigure" />
+    
+
+</launch>

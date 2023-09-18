@@ -1,0 +1,16 @@
+<launch>        
+    <arg name="bag" default="/media/da/T7/dataset/Blyth2021/SLAM_test/blyth_2021-09-14-13-21-18.bag" />
+    <arg name="pose" default="$(find stereo_dense_mapper)/data/dvl2_trajectories.txt" />
+    <arg name="out_path" default="$(find stereo_dense_mapper)/data"/>
+    <node pkg="rosbag" type="play" name="rosbag_play"
+       args="$(arg bag) -r 2 --clock --topics /rexrov2/rexrov2/cameraright/camera_image/compressed /rexrov2/rexrov2/cameraleft/camera_image/compressed  /rexrov2/rexrov2/cameraleft/camera_image /rexrov2/rexrov2/cameraright/camera_image /rexrov2/imu /rexrov2/dvl_twist /CAM_L/image_dehazed/compressed /CAM_R/image_dehazed/compressed /gx5/imu/data /falcon/odometry /CAM_R/camera_info /CAM_L/camera_info" output="screen"/>
+    <param name="/stereo_mapper_node/img_l_topic" value="/CAM_L/image_dehazed"/>
+    <param name="/stereo_mapper_node/img_r_topic" value="/CAM_R/image_dehazed"/>
+    <param name="/stereo_mapper_node/config_file" value="$(find stereo_dense_mapper)/config/falcon.yaml"/>
+    <param name="/stereo_mapper_node/pose_file" value="$(arg pose)"/>
+    <param name="/stereo_mapper_node/out_path" value="$(arg out_path)"/>
+    <node pkg="stereo_dense_mapper" type="stereo_mapper_node" name="stereo_mapper_node" output="screen">
+    </node>
+    
+
+</launch>

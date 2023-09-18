@@ -1,0 +1,25 @@
+%YAML:1.0
+dictitems:
+  P1: 200.0
+  P2: 400.0
+  correlation_window_size: 21
+  disp12MaxDiff: 0
+  disparity_range: 176
+  fullDP: false
+  min_disparity: 0
+  prefilter_cap: 10
+  prefilter_size: 5
+  speckle_range: 10
+  speckle_size: 10
+  stereo_algorithm: 0
+  texture_threshold: 5
+  uniqueness_ratio: 15.0
+state: []
+Tbc: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: f
+  data: [ 0.000796327, -0.341105, 0.940025, 0.57, #real falcon point down 20 degree
+          -1, -0.000271631,  0.000748567, 0,
+          0, -0.940025, -0.341105, -0.24,
+          0, 0, 0, 1 ]
